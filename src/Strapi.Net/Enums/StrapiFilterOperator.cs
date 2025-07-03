@@ -12,7 +12,6 @@ public enum StrapiFilterOperator
     Contains,
     ContainsInsensitive,
     IsNull,
-    IsNotNull,
     Between,
     StartsWith,
     EndsWith,

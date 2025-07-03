@@ -12,6 +12,7 @@ public static class StrapiDecoder
         var root = JsonNode.Parse(json);
         var optionSerializer = new JsonSerializerOptions()
         {
+            PropertyNameCaseInsensitive = true
         };
         optionSerializer.Converters.Add(new StrapiBlockJsonConverter());
         if (root?["data"] is JsonNode dataNode)
@@ -39,14 +40,12 @@ public static class StrapiDecoder
 
 
         if (root?["meta"] is JsonNode metaNode)
-        {
             if (metaNode is JsonObject || metaNode is JsonValue) // handle edge case where object is wrapped in value
             {
-                var single = metaNode.Deserialize<StrapiMeta>();
+                var single = metaNode.Deserialize<StrapiMeta>(optionSerializer);
                 if (single is not null)
                     response.Meta = single;
             }
-        }
         return response;
     }
 }

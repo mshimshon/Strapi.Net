@@ -1,9 +1,9 @@
-﻿using Strapi.Net;
-using Strapi.Net.Enums;
+﻿using Strapi.Net.Enums;
 using Strapi.Net.Extensions;
+using Strapi.Net.Internal;
 using System.Linq.Expressions;
 
-namespace Strapi.Net.Internal;
+namespace Strapi.Net;
 public class StrapiQueryBuilder : IStrapiBuilder
 {
     private readonly Dictionary<string, string> _filters = new();
@@ -20,13 +20,14 @@ public class StrapiQueryBuilder : IStrapiBuilder
     public StrapiQueryBuilder()
     {
     }
+    public static IStrapiBuilder Create() => new StrapiQueryBuilder();
     public IStrapiBuilder AddSort(string field, StrapiShortDirection direction = StrapiShortDirection.Ascending)
     {
         _sorts.Add($"{field}:{StrapiEnumMappings._sortDirection[direction]}");
         return this;
     }
 
-    public IStrapiBuilder AddSort<TEntity>(Expression<Func<TEntity>> property, StrapiShortDirection direction = StrapiShortDirection.Ascending)
+    public IStrapiBuilder AddSort<TEntity>(Expression<Func<TEntity, object>> property, StrapiShortDirection direction = StrapiShortDirection.Ascending)
       => AddSort(property.GetFullPropertyPath(), direction);
 
     public IStrapiBuilder Filter(string field, StrapiFilterOperator @operator, string value)
@@ -40,7 +41,7 @@ public class StrapiQueryBuilder : IStrapiBuilder
         _filters.Add(fields.Select(p => $"[{p}]") + $"[{StrapiEnumMappings._operatorMap[@operator]}]", value);
         return this;
     }
-    public IStrapiBuilder Filter<TEntity>(Expression<Func<TEntity>> property, StrapiFilterOperator @operator, string value)
+    public IStrapiBuilder Filter<TEntity>(Expression<Func<TEntity, object>> property, StrapiFilterOperator @operator, string value)
     {
         var name = property.GetFullPropertyPath();
         return Filter(name, @operator, value);
@@ -65,7 +66,7 @@ public class StrapiQueryBuilder : IStrapiBuilder
             _fields.Add(item);
         return this;
     }
-    public IStrapiBuilder RestrictFieldTo<TEntity>(Expression<Func<TEntity>> property, StrapiFilterOperator @operator,
+    public IStrapiBuilder RestrictFieldTo<TEntity>(Expression<Func<TEntity, object>> property, StrapiFilterOperator @operator,
         string value) => RestrictFieldsTo(property.GetFullPropertyPath());
     public IStrapiBuilder Search(string keywords) => OneLine(() => _search = keywords);
     public IStrapiBuilder SetLocal(string language) => OneLine(() => _locale = language);
@@ -79,7 +80,7 @@ public class StrapiQueryBuilder : IStrapiBuilder
         if (_search != string.Empty) query.Add($"_q={_search}");
         if (_filters.Count > 0)
             foreach (var f in _filters)
-                query.Add($"filters{f}={f.Value.ToString() ?? string.Empty}");
+                query.Add($"filters{f.Key.ToLower()}={f.Value.ToString() ?? string.Empty}");
 
         if (!_isPopulatingAll && _populate.Count > 0)
         {

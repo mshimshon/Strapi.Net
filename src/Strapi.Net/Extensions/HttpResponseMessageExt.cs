@@ -30,7 +30,7 @@ internal static class HttpResponseMessageExt
             jsonNode.AsObject().Remove("data");
             deserializedData = JsonSerializer.Deserialize<StrapiResponse<TData>>(jsonNode.ToJsonString())!;
             var singleItem = JsonSerializer.Deserialize<TData>(dataNode.ToJsonString())!;
-            deserializedData.Data = new() { singleItem };
+            deserializedData.Data = new List<TData>() { singleItem };
         }
         return deserializedData;
     }

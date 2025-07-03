@@ -31,7 +31,7 @@ public static class ReflectionExt
             : (MemberExpression)property.Body;
         return (PropertyInfo)memberExpression.Member;
     }
-    public static string GetFullPropertyPath<TEntity>(this Expression<Func<TEntity>> property)
+    public static string GetFullPropertyPath<TEntity>(this Expression<Func<TEntity, object>> property)
     {
         var memberExpression = property.Body switch
         {
