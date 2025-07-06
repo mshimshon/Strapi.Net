@@ -27,8 +27,8 @@ public class StrapiQueryBuilder : IStrapiBuilder
         return this;
     }
 
-    public IStrapiBuilder AddSort<TEntity>(Expression<Func<TEntity, object>> property, StrapiShortDirection direction = StrapiShortDirection.Ascending)
-      => AddSort(property.GetFullPropertyPath(), direction);
+    public IStrapiBuilder AddSort<TEntity>(Expression<Func<TEntity, object>> property, Func<string, string> caseFixer, StrapiShortDirection direction = StrapiShortDirection.Ascending)
+      => AddSort(caseFixer(property.GetFullPropertyPath()), direction);
 
     public IStrapiBuilder Filter(string field, StrapiFilterOperator @operator, string value)
     {
@@ -41,9 +41,9 @@ public class StrapiQueryBuilder : IStrapiBuilder
         _filters.Add(fields.Select(p => $"[{p}]") + $"[{StrapiEnumMappings._operatorMap[@operator]}]", value);
         return this;
     }
-    public IStrapiBuilder Filter<TEntity>(Expression<Func<TEntity, object>> property, StrapiFilterOperator @operator, string value)
+    public IStrapiBuilder Filter<TEntity>(Expression<Func<TEntity, object>> property, Func<string, string> caseFixer, StrapiFilterOperator @operator, string value)
     {
-        var name = property.GetFullPropertyPath();
+        var name = caseFixer(property.GetFullPropertyPath());
         return Filter(name, @operator, value);
     }
 
@@ -66,8 +66,8 @@ public class StrapiQueryBuilder : IStrapiBuilder
             _fields.Add(item);
         return this;
     }
-    public IStrapiBuilder RestrictFieldTo<TEntity>(Expression<Func<TEntity, object>> property, StrapiFilterOperator @operator,
-        string value) => RestrictFieldsTo(property.GetFullPropertyPath());
+    public IStrapiBuilder RestrictFieldTo<TEntity>(Expression<Func<TEntity, object>> property, Func<string, string> caseFixer, StrapiFilterOperator @operator,
+        string value) => RestrictFieldsTo(caseFixer(property.GetFullPropertyPath()));
     public IStrapiBuilder Search(string keywords) => OneLine(() => _search = keywords);
     public IStrapiBuilder SetLocal(string language) => OneLine(() => _locale = language);
     public IStrapiBuilder PopulateAll() => OneLine(() => _isPopulatingAll = true);
@@ -80,12 +80,12 @@ public class StrapiQueryBuilder : IStrapiBuilder
         if (_search != string.Empty) query.Add($"_q={_search}");
         if (_filters.Count > 0)
             foreach (var f in _filters)
-                query.Add($"filters{f.Key.ToLower()}={f.Value.ToString() ?? string.Empty}");
+                query.Add($"filters{f.Key}={f.Value.ToString() ?? string.Empty}");
 
         if (!_isPopulatingAll && _populate.Count > 0)
         {
             var counter = 0;
-            foreach (var item in query)
+            foreach (var item in _populate)
             {
                 query.Add($"populate[{counter}]={item}");
                 counter++;

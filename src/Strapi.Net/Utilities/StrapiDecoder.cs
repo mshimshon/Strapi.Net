@@ -5,6 +5,15 @@ using System.Text.Json.Nodes;
 namespace Strapi.Net.Utilities;
 public static class StrapiDecoder
 {
+    public static TData DecodePart<TData>(string json)
+    {
+        var optionSerializer = new JsonSerializerOptions()
+        {
+            PropertyNameCaseInsensitive = true
+        };
+        return JsonSerializer.Deserialize<TData>(json, optionSerializer)!;
+    }
+
     public static StrapiResponse<TData> DecodeResponse<TData>(string json)
     {
         var response = new StrapiResponse<TData>();
