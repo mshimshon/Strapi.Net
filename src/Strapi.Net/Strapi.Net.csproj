@@ -14,7 +14,7 @@
     <PackageProjectUrl>https://github.com/mshimshon/Strapi.Net</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/mshimshon/Strapi.Net</RepositoryUrl>
-	<Version>0.9.21</Version>
+	<Version>0.9.4</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
