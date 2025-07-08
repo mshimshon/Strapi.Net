@@ -99,6 +99,10 @@ dotnet add package Strapi.Net
 ## 🧩 Implement ```IStrapiClient```
 You must implement the client yourself to ensure loose coupleling with httpclient.
 
+### Key Notes
+- Use ```StrapiDecoder.DecodeResponse``` to read result this help avoid case sensitive property issues.
+- Use ```StrapiDecoder.DecodePart``` to parse parts when decode partial pieces such as block components to avoid not populating properties issue.
+
 Here's an example:
 
 ```bash
