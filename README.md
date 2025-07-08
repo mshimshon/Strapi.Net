@@ -16,13 +16,15 @@
 Build complex Strapi query strings without manually encoding filters, sorts, or relations:
 
 ```csharp
+IStrapiBuilder strapiBuilder;
 var query = strapiBuilder
     .From("articles")
     .Filter("title", StrapiFilterOperator.Equal, "AI")
     .Sort("publishedAt", StrapiSortDirection.Descending)
     .Paginate(1, 10)
     .Populate("author", "tags")
-    .Build();
+    .ToQueryString($"articles");
+    await IStrapiClient.Get(query);
 ```
 
 ### 🔄 Response Mapping
