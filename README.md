@@ -1,16 +1,14 @@
 # Strapi.Net
+Strapi.Net is a lightweight .NET helper library for fluent query building, strong typed response mapping, and clean integration with Strapi CMS APIs. Perfect for ASP.NET Core, Blazor, and Clean Architecture apps.
 
-**Strapi.Net** is a lightweight helper library for .NET applications integrating with Strapi-powered backends. It provides:
-
-* ✅ Fluent Strapi query building with `IStrapiBuilder`
-* ✅ Seamless deserialization of Strapi single/collection responses
-* ✅ Error model mapping from Strapi's standard format
-* ✅ Fully testable and abstract-friendly design
-
----
 
 ## 🚀 Features
 
+- ✅ Fluent Strapi query building with `IStrapiBuilder`
+- ✅ Seamless deserialization of Strapi single/collection responses
+- ✅ Error model mapping from Strapi's standard format
+- ✅ Fully testable and abstract-friendly design
+ 
 ### 🛠 Fluent Query Builder
 
 Build complex Strapi query strings without manually encoding filters, sorts, or relations:
