@@ -6,27 +6,32 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Title>Strapi.NET</Title>
+    <Title>Strapi.Net</Title>
     <Company>Maksim Shimshon</Company>
     <Authors>Maksim Shimshon</Authors>
-    <Product>Strapi.NET</Product>
+    <Product>Strapi.Net</Product>
     <Description>
 		Strapi.Net is a lightweight .NET helper library for fluent query building, strong typed response mapping, and clean integration with Strapi CMS APIs. Perfect for ASP.NET Core, Blazor, and Clean Architecture apps.
 	</Description>
     <Copyright>Maksim Shimshon © 2025</Copyright>
     <PackageProjectUrl>https://github.com/mshimshon/Strapi.Net</PackageProjectUrl>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReadmeFile>RELEASES.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/mshimshon/Strapi.Net</RepositoryUrl>
-	<Version>0.9.50</Version>
+	<Version>0.9.54</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\..\icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Include="..\..\LICENSE">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <None Include="..\..\README.md">
+    <None Include="..\..\RELEASES.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>

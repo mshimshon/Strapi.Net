@@ -14,7 +14,8 @@ Strapi.Net is a lightweight .NET helper library for fluent query building, stron
 Build complex Strapi query strings without manually encoding filters, sorts, or relations:
 
 ```csharp
-IStrapiBuilder strapiBuilder;
+IStrapiClient strapiClient; // from service DI or your implementation of it.
+IStrapiBuilder strapiBuilder = StrapiQueryBuilder.Create();
 var query = strapiBuilder
     .From("articles")
     .Filter("title", StrapiFilterOperator.Equal, "AI")
@@ -22,7 +23,7 @@ var query = strapiBuilder
     .Paginate(1, 10)
     .Populate("author", "tags")
     .ToQueryString($"articles");
-    await IStrapiClient.Get(query);
+    await strapiClient.Get(query);
 ```
 
 ### 🔄 Response Mapping
