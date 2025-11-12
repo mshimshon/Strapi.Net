@@ -38,7 +38,7 @@ public class StrapiQueryBuilder : IStrapiBuilder
     public IStrapiBuilder Filter(string[] fields, StrapiFilterOperator @operator, string value)
     {
 
-        _filters.Add(fields.Select(p => $"[{p}]") + $"[{StrapiEnumMappings._operatorMap[@operator]}]", value);
+        _filters.Add(string.Concat(fields.Select(p => $"[{p}]").ToArray()) + $"[{StrapiEnumMappings._operatorMap[@operator]}]", value);
         return this;
     }
     public IStrapiBuilder Filter<TEntity>(Expression<Func<TEntity, object>> property, Func<string, string> caseFixer, StrapiFilterOperator @operator, string value)
